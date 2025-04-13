@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المدير</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* لوحة التحكم الخاصة بالمدير */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            width: 80px;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .sidebar.active .sidebar-title {
+            display: none;
+        }
+        
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu li {
+            padding: 10px 20px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-menu li:hover, .sidebar-menu li.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu li i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            min-width: 25px;
+            text-align: center;
+        }
+        
+        .sidebar.active .sidebar-menu li span {
+            display: none;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            margin-right: 250px;
+            padding: 20px;
+            transition: var(--transition);
+        }
+        
+        .main-content.active {
+            margin-right: 80px;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .language-buttons {
+            margin-left: 20px;
+        }
+        
+        .language-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            font-weight: 500;
+            color: #6c757d;
+        }
+        
+        .language-btn.active {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        /* بطاقات الإحصائيات */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stats-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+        }
+        
+        .stats-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-left: 15px;
+        }
+        
+        .stats-icon.blue {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .stats-icon.green {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+        
+        .stats-icon.orange {
+            background-color: rgba(230, 126, 34, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .stats-icon.red {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+        
+        .stats-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stats-info p {
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* أقسام المحتوى */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .content-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .content-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* جدول البيانات */
+        .table-responsive {
+            margin-bottom: 0;
+        }
+        
+        .table th {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* بطاقات العقارات */
+        .property-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            height: 100%;
+        }
+        
+        .property-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .property-card-body {
+            padding: 15px;
+        }
+        
+        .property-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .property-card-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .property-card-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        /* نموذج العقار */
+        .property-form-image {
+            margin-top: 10px;
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+        }
+        
+        /* نموذج الإعدادات */
+        .settings-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* تعديلات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .sidebar-title {
+                display: none;
+            }
+            
+            .sidebar .sidebar-menu li span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-right: 80px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title" id="sidebar-title">لوحة تحكم المدير</div>
+                <button class="sidebar-toggle" id="sidebarCollapse">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span id="menu-dashboard">لوحة المعلومات</span>
+                </li>
+                <li data-section="properties">
+                    <i class="fas fa-home"></i>
+                    <span id="menu-properties">العقارات</span>
+                </li>
+                <li data-section="interested-clients">
+                    <i class="fas fa-users"></i>
+                    <span id="menu-interested">العملاء المهتمين</span>
+                </li>
+                <li data-section="contact-messages">
+                    <i class="fas fa-envelope"></i>
+                    <span id="menu-messages">رسائل التواصل</span>
+                </li>
+                <li data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span id="menu-settings">الإعدادات</span>
+                </li>
+                <li>
+                    <a href="index.html" style="color: white; text-decoration: none; display: flex; align-items: center;">
+                        <i class="fas fa-globe"></i>
+                        <span id="menu-website">زيارة الموقع</span>
+                    </a>
+                </li>
+                <li id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span id="menu-logout">تسجيل الخروج</span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <div class="dashboard-header">
+                <h1 class="page-title" id="page-title">لوحة المعلومات</h1>
+                
+                <div class="user-info">
+                    <div class="language-buttons">
+                        <button class="language-btn active" id="ar-lang">العربية</button> |
+                        <button class="language-btn" id="en-lang">English</button>
+                        <span class="ms-2">(<span id="current-language">العربية</span>)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم لوحة المعلومات -->
+            <div class="content-section active" id="dashboard-section">
+                <!-- بطاقات الإحصائيات -->
+                <div class="stats-cards">
+                    <div class="stats-card">
+                        <div class="stats-icon blue">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3 id="property-count">0</h3>
+                            <p id="stats-properties">العقارات</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-icon green">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3 id="interested-count">0</h3>
+                            <p id="stats-interested">العملاء المهتمين</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-icon orange">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3 id="message-count">0</h3>
+                            <p id="stats-messages">الرسائل</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <div class="stats-icon red">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3 id="view-count">0</h3>
+                            <p id="stats-views">المشاهدات</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- آخر العملاء المهتمين -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title" id="recent-interested-title">آخر العملاء المهتمين</h2>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th id="table-name">الاسم</th>
+                                    <th id="table-property">العقار</th>
+                                    <th id="table-date">التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-interested-body">
+                                <!-- سيتم ملء هذا الجدول ديناميكيًا -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- آخر الرسائل -->
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title" id="recent-messages-title">آخر الرسائل</h2>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th id="table-name-msg">الاسم</th>
+                                    <th id="table-subject">الموضوع</th>
+                                    <th id="table-date-msg">التاريخ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-messages-body">
+                                <!-- سيتم ملء هذا الجدول ديناميكيًا -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم العقارات -->
+            <div class="content-section" id="properties-section">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title" id="properties-title">إدارة العقارات</h2>
+                        <button class="btn btn-primary" id="add-property-btn">
+                            <i class="fas fa-plus"></i>
+                            <span id="add-property-text">إضافة عقار</span>
+                        </button>
+                    </div>
+                    
+                    <div class="row" id="properties-container">
+                        <!-- سيتم ملء هذا القسم ديناميكيًا -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم العملاء المهتمين -->
+            <div class="content-section" id="interested-clients-section">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title" id="interested-clients-title">العملاء المهتمين</h2>
+                        <div>
+                            <button class="btn btn-success me-2" id="export-excel-interested">
+                                <i class="fas fa-file-excel"></i>
+                                <span id="export-excel-text">تصدير Excel</span>
+                            </button>
+                            <button class="btn btn-danger" id="export-pdf-interested">
+                                <i class="fas fa-file-pdf"></i>
+                                <span id="export-pdf-text">تصدير PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="interested-clients-table">
+                            <thead>
+                                <tr>
+                                    <th id="table-id">الرقم</th>
+                                    <th id="table-name-int">الاسم</th>
+                                    <th id="table-phone">رقم الهاتف</th>
+                                    <th id="table-email">البريد الإلكتروني</th>
+                                    <th id="table-property-int">العقار</th>
+                                    <th id="table-date-int">التاريخ</th>
+                                    <th id="table-actions">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="interested-clients-body">
+                                <!-- سيتم ملء هذا الجدول ديناميكيًا -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم رسائل التواصل -->
+            <div class="content-section" id="contact-messages-section">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title" id="contact-messages-title">رسائل التواصل</h2>
+                        <div>
+                            <button class="btn btn-success me-2" id="export-excel-messages">
+                                <i class="fas fa-file-excel"></i>
+                                <span id="export-excel-msg-text">تصدير Excel</span>
+                            </button>
+                            <button class="btn btn-danger" id="export-pdf-messages">
+                                <i class="fas fa-file-pdf"></i>
+                                <span id="export-pdf-msg-text">تصدير PDF</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="contact-messages-table">
+                            <thead>
+                                <tr>
+                                    <th id="table-id-msg">الرقم</th>
+                                    <th id="table-name-msg-full">الاسم</th>
+                                    <th id="table-phone-msg">رقم الهاتف</th>
+                                    <th id="table-email-msg">البريد الإلكتروني</th>
+                                    <th id="table-message">الرسالة</th>
+                                    <th id="table-date-msg-full">التاريخ</th>
+                                    <th id="table-actions-msg">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contact-messages-body">
+                                <!-- سيتم ملء هذا الجدول ديناميكيًا -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم الإعدادات -->
+            <div class="content-section" id="settings-section">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h2 class="content-card-title" id="settings-title">إعدادات الموقع</h2>
+                    </div>
+                    
+                    <form id="settings-form" class="settings-form">
+                        <div class="mb-3">
+                            <label for="admin-username" class="form-label" id="label-username">اسم المستخدم</label>
+                            <input type="text" class="form-control" id="admin-username" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="admin-password" class="form-label" id="label-password">كلمة المرور</label>
+                            <input type="password" class="form-control" id="admin-password" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="site-title-ar" class="form-label" id="label-site-title-ar">عنوان الموقع (عربي)</label>
+                            <input type="text" class="form-control" id="site-title-ar" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="site-title-en" class="form-label" id="label-site-title-en">عنوان الموقع (إنجليزي)</label>
+                            <input type="text" class="form-control" id="site-title-en" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="site-description-ar" class="form-label" id="label-site-description-ar">وصف الموقع (عربي)</label>
+                            <textarea class="form-control" id="site-description-ar" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="site-description-en" class="form-label" id="label-site-description-en">وصف الموقع (إنجليزي)</label>
+                            <textarea class="form-control" id="site-description-en" rows="3" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" id="save-settings-btn">حفظ الإعدادات</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة إضافة/تعديل عقار -->
+    <div class="modal fade" id="propertyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="propertyModalLabel">إضافة عقار جديد</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="property-form">
+                        <input type="hidden" id="property-id">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="property-title-ar" class="form-label" id="label-title-ar">العنوان (عربي)</label>
+                                <input type="text" class="form-control" id="property-title-ar" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="property-title-en" class="form-label" id="label-title-en">العنوان (إنجليزي)</label>
+                                <input type="text" class="form-control" id="property-title-en" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="property-type" class="form-label" id="label-type">نوع العقار</label>
+                                <select class="form-select" id="property-type" required>
+                                    <option value="apartment" id="type-apartment">شقة</option>
+                                    <option value="villa" id="type-villa">فيلا</option>
+                                    <option value="office" id="type-office">مكتب</option>
+                                    <option value="land" id="type-land">أرض</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="property-price" class="form-label" id="label-price">السعر</label>
+                                <input type="number" class="form-control" id="property-price" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="property-area" class="form-label" id="label-area">المساحة (متر مربع)</label>
+                                <input type="number" class="form-control" id="property-area" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="property-rooms" class="form-label" id="label-rooms">عدد الغرف</label>
+                                <input type="number" class="form-control" id="property-rooms" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="property-location-ar" class="form-label" id="label-location-ar">الموقع (عربي)</label>
+                                <input type="text" class="form-control" id="property-location-ar" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="property-location-en" class="form-label" id="label-location-en">الموقع (إنجليزي)</label>
+                                <input type="text" class="form-control" id="property-location-en" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="property-description-ar" class="form-label" id="label-description-ar">الوصف (عربي)</label>
+                            <textarea class="form-control" id="property-description-ar" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="property-description-en" class="form-label" id="label-description-en">الوصف (إنجليزي)</label>
+                            <textarea class="form-control" id="property-description-en" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="property-image" class="form-label" id="label-image">صورة العقار</label>
+                            <input type="file" class="form-control" id="property-image" accept="image/*">
+                            <img id="property-image-preview" src="" alt="" class="property-form-image d-none">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-property-btn">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="save-property-btn">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة تأكيد حذف العقار -->
+    <div class="modal fade" id="deletePropertyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePropertyModalLabel">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="delete-property-message">هل أنت متأكد من رغبتك في حذف هذا العقار؟ لا يمكن التراجع عن هذا الإجراء.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancel-delete-btn">إلغاء</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-btn">حذف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة تفاصيل العميل -->
+    <div class="modal fade" id="clientDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="clientDetailsModalLabel">تفاصيل العميل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong id="label-name-details">الاسم:</strong>
+                        <span id="client-name-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-phone-details">رقم الهاتف:</strong>
+                        <span id="client-phone-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-email-details">البريد الإلكتروني:</strong>
+                        <span id="client-email-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-property-details">العقار:</strong>
+                        <span id="client-property-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-date-details">تاريخ الاهتمام:</strong>
+                        <span id="client-date-details"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-details-btn">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة تفاصيل الرسالة -->
+    <div class="modal fade" id="messageDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageDetailsModalLabel">تفاصيل الرسالة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong id="label-name-msg-details">الاسم:</strong>
+                        <span id="message-name-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-phone-msg-details">رقم الهاتف:</strong>
+                        <span id="message-phone-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-email-msg-details">البريد الإلكتروني:</strong>
+                        <span id="message-email-details"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-message-details">الرسالة:</strong>
+                        <p id="message-text-details"></p>
+                    </div>
+                    <div class="mb-3">
+                        <strong id="label-date-msg-details">تاريخ الإرسال:</strong>
+                        <span id="message-date-details"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-message-btn">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

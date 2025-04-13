@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع العقارات</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo" id="site-logo">موقع العقارات</a>
+                
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="nav-home">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#properties" class="nav-link" id="nav-properties">العقارات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#features" class="nav-link" id="nav-features">مميزاتنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link" id="nav-contact">اتصل بنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="language-switch" id="language-switch">English</button>
+                    </li>
+                </ul>
+                
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title" id="hero-title">اكتشف أفضل العقارات المميزة</h1>
+            <p class="hero-description" id="hero-description">نقدم مجموعة متنوعة من العقارات المميزة بمواصفات عالية وأسعار مناسبة</p>
+            <a href="#properties" class="btn btn-primary" id="hero-btn">استعرض العقارات</a>
+        </div>
+    </section>
+    
+    <!-- Properties Section -->
+    <section class="properties" id="properties">
+        <div class="container">
+            <div class="section-title">
+                <h2 id="properties-title">العقارات المميزة</h2>
+                <p id="properties-subtitle">استكشف مجموعتنا المتنوعة من العقارات المميزة</p>
+            </div>
+            
+            <div class="properties-grid" id="properties-container">
+                <!-- سيتم ملء هذا القسم ديناميكيًا -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2 id="features-title">لماذا تختارنا</h2>
+                <p id="features-subtitle">نقدم لك أفضل الخدمات العقارية بمعايير عالية</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="feature-title" id="feature-1-title">عقارات حصرية</h3>
+                    <p class="feature-description" id="feature-1-description">نوفر لك مجموعة من العقارات الحصرية والمميزة في أفضل المواقع</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="feature-title" id="feature-2-title">أسعار تنافسية</h3>
+                    <p class="feature-description" id="feature-2-description">نقدم أسعارًا تنافسية تناسب جميع الميزانيات مع ضمان أفضل جودة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="feature-title" id="feature-3-title">دعم متميز</h3>
+                    <p class="feature-description" id="feature-3-description">فريق دعم متخصص لمساعدتك في جميع استفساراتك على مدار الساعة</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title" id="feature-4-title">ضمان الجودة</h3>
+                    <p class="feature-description" id="feature-4-description">نضمن لك أعلى معايير الجودة في جميع العقارات التي نقدمها</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2 id="contact-title">اتصل بنا</h2>
+                <p id="contact-subtitle">نحن هنا للإجابة على جميع استفساراتك</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="contact-form">
+                        <div class="success-message" id="contact-success">
+                            تم إرسال رسالتك بنجاح. سنتواصل معك قريبًا.
+                        </div>
+                        <div class="error-message" id="contact-error">
+                            حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى.
+                        </div>
+                        
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="contact-name" class="form-label" id="label-name">الاسم</label>
+                                <input type="text" id="contact-name" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-phone" class="form-label" id="label-phone">رقم الهاتف</label>
+                                <input type="tel" id="contact-phone" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-email" class="form-label" id="label-email">البريد الإلكتروني</label>
+                                <input type="email" id="contact-email" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-message" class="form-label" id="label-message">الرسالة</label>
+                                <textarea id="contact-message" class="form-control" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="contact-submit">
+                                <span class="spinner d-none"></span>
+                                <span id="submit-text">إرسال</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 id="footer-about-title">عن الشركة</h3>
+                    <p id="footer-about-text">نحن شركة رائدة في مجال العقارات، نقدم خدمات متميزة ونوفر أفضل العقارات بأسعار تنافسية.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 id="footer-links-title">روابط سريعة</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" id="footer-home">الرئيسية</a></li>
+                        <li><a href="#properties" id="footer-properties">العقارات</a></li>
+                        <li><a href="#features" id="footer-features">مميزاتنا</a></li>
+                        <li><a href="#contact" id="footer-contact">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 id="footer-contact-title">معلومات الاتصال</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> <span id="footer-address">الرياض، المملكة العربية السعودية</span></li>
+                        <li><i class="fas fa-phone"></i> <span id="footer-phone">+966 12 345 6789</span></li>
+                        <li><i class="fas fa-envelope"></i> <span id="footer-email">info@realestate.com</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p id="footer-copyright">© 2025 موقع العقارات. جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Property Details Modal -->
+    <div class="modal" id="property-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="property-modal-title"></h5>
+                    <button type="button" class="modal-close" id="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="property-details-grid">
+                        <div class="property-details-image">
+                            <img id="property-modal-image" src="" alt="">
+                        </div>
+                        <div class="property-details-info">
+                            <h3 id="property-modal-title-inner"></h3>
+                            <div class="property-details-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="property-modal-location"></span>
+                            </div>
+                            <div class="property-details-price" id="property-modal-price"></div>
+                            <div class="property-details-features">
+                                <div class="property-details-feature">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span id="property-modal-area"></span>
+                                </div>
+                                <div class="property-details-feature">
+                                    <i class="fas fa-bed"></i>
+                                    <span id="property-modal-rooms"></span>
+                                </div>
+                            </div>
+                            <div class="property-details-description">
+                                <h4 id="property-modal-description-title">الوصف</h4>
+                                <p id="property-modal-description"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="property-interest-form">
+                        <h4 id="property-interest-title">مهتم بهذا العقار؟</h4>
+                        <div class="success-message" id="interest-success">
+                            تم تسجيل اهتمامك بنجاح. سنتواصل معك قريبًا.
+                        </div>
+                        <div class="error-message" id="interest-error">
+                            حدث خطأ أثناء تسجيل اهتمامك. يرجى المحاولة مرة أخرى.
+                        </div>
+                        
+                        <form id="interest-form">
+                            <input type="hidden" id="interest-property-id">
+                            <div class="form-group">
+                                <label for="interest-name" class="form-label" id="label-interest-name">الاسم</label>
+                                <input type="text" id="interest-name" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="interest-phone" class="form-label" id="label-interest-phone">رقم الهاتف</label>
+                                <input type="tel" id="interest-phone" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="interest-email" class="form-label" id="label-interest-email">البريد الإلكتروني</label>
+                                <input type="email" id="interest-email" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" id="interest-submit">
+                                <span class="spinner d-none"></span>
+                                <span id="interest-submit-text">تسجيل الاهتمام</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
